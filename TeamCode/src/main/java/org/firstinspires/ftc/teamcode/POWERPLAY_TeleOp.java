@@ -153,9 +153,7 @@ public class POWERPLAY_TeleOp extends OpMode {
             robot.openAndCloseClaw(.3);
         }
 
-
     }
-
 
     /*
      * Code to run ONCE after the driver hits STOP
