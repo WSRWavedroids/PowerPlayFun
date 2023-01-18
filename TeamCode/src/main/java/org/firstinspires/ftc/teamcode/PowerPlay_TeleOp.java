@@ -31,8 +31,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -54,7 +52,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 
 @TeleOp(name="Fission our WAVE to Worlds! :)", group="Iterative Opmode")
-public class POWERPLAY_TeleOp extends OpMode {
+public class PowerPlay_TeleOp extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
@@ -152,7 +150,7 @@ public class POWERPLAY_TeleOp extends OpMode {
         } else if (this.gamepad2.b) {
             robot.openAndCloseClaw(.3);
         }
-        
+
     }
 
     /*
