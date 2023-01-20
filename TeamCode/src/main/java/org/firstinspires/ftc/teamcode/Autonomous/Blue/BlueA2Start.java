@@ -32,41 +32,41 @@ public class BlueA2Start extends AutonomousPLUS {
         //MayFlowers.AprilTagsUpdate();
 
         robot.openAndCloseClaw(0);
-        prepareNextAction(300);
+        //prepareNextAction(300);
         sleepTime = 400;
         moveArm("Up", 0.75);
         //moveArmE("Up", 40);
-        moveRobotForward(1500, 50);
-        moveRobotBackward(300, 50);
-        moveRobotLeft(1825, 50);
+        moveRobotForward(1500, 0);
+        moveRobotBackward(300, 0);
+        moveRobotLeft(1825, 0);
         sleepTime = (1800);
         moveArm("Up",0.75);
         speed = 0.25;
-        moveRobotForward(275, 50);
+        moveRobotForward(275, 0);
         moveArm("Down",0.75);
-        sleep(50);
+        //sleep(50);
         robot.slide.setPower(0.1);
         robot.openAndCloseClaw(0.3);
-        prepareNextAction(25);
-        moveRobotBackward(150, 50);
-        prepareNextAction(100);
+        //prepareNextAction(25);
+        moveRobotBackward(150, 0);
+        //prepareNextAction(100);
         speed = 0.5;
 
         if (robot.parkingZone == 1){
 
-           moveRobotRight(600, 50);
+           moveRobotRight(600, 0);
 
         } else if (robot.parkingZone == 2){
 
-           moveRobotRight(1900, 50);
+           moveRobotRight(1900, 0);
 
         } else if (robot.parkingZone == 3){
 
-            moveRobotRight(3200, 50);
+            moveRobotRight(3200, 0);
 
         } else {
 
-            moveRobotRight(600, 100);
+            moveRobotRight(600, 0);
 
         }
 
