@@ -38,8 +38,5 @@ waitForStart();
         moveRobotForward(2500, 1);
         moveRobotBackward(1500,1);
 
-
-
-
-
+        
     }}
