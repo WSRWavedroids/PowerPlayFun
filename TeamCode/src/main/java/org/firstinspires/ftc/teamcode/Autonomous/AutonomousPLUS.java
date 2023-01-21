@@ -187,7 +187,7 @@ public class AutonomousPLUS extends LinearOpMode {
             robot.slide.setPower(0.75);
             sleep(sleepTime);
             robot.slide.setPower(0.1);
-            sleep(1550);
+            sleep(500);
         } else if (direction == "Down") {
             robot.slide.setDirection(DcMotor.Direction.FORWARD);
             robot.slide.setPower(0.5);

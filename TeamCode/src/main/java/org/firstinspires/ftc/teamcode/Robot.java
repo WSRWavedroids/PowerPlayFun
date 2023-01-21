@@ -120,15 +120,15 @@ public class Robot {
 
         } else if (direction == "Turn Right") {
             frontLeftDrive.setTargetPosition(ticks + frontLeftDrive.getCurrentPosition());
-            frontRightDrive.setTargetPosition(-ticks + frontRightDrive.getCurrentPosition());
-            backLeftDrive.setTargetPosition(ticks + backLeftDrive.getCurrentPosition());
-            backRightDrive.setTargetPosition(-ticks + backRightDrive.getCurrentPosition());
+            frontRightDrive.setTargetPosition(-ticks - frontRightDrive.getCurrentPosition());
+            backLeftDrive.setTargetPosition(ticks - backLeftDrive.getCurrentPosition());
+            backRightDrive.setTargetPosition(-ticks - backRightDrive.getCurrentPosition());
 
         } else if (direction == "Turn Left") {
-            frontLeftDrive.setTargetPosition(-ticks + frontLeftDrive.getCurrentPosition());
+            frontLeftDrive.setTargetPosition(-ticks - frontLeftDrive.getCurrentPosition());
             frontRightDrive.setTargetPosition(ticks + frontRightDrive.getCurrentPosition());
-            backLeftDrive.setTargetPosition(-ticks + backLeftDrive.getCurrentPosition());
-            backRightDrive.setTargetPosition(ticks + backRightDrive.getCurrentPosition());
+            backLeftDrive.setTargetPosition(-ticks - backLeftDrive.getCurrentPosition());
+            backRightDrive.setTargetPosition(ticks - backRightDrive.getCurrentPosition());
 
         } else if (direction == "Arm"){
             slide.setTargetPosition(ticks + slide.getCurrentPosition());
