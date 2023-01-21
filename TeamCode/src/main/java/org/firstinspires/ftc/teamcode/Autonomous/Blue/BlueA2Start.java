@@ -32,7 +32,7 @@ public class BlueA2Start extends AutonomousPLUS {
         //MayFlowers.AprilTagsUpdate();
 
         robot.openAndCloseClaw(0);
-        //prepareNextAction(300);
+        prepareNextAction(300);
         sleepTime = 400;
         moveArm("Up", 0.75);
         //moveArmE("Up", 40);
