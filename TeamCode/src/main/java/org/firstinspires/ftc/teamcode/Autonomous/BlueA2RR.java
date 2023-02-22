@@ -13,18 +13,17 @@ import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.Robot;
 
 @Config
-@Autonomous(name = "Blue A2 RoadRunner", group = "drive")
-public class BlueA2RR extends LinearOpMode {
-
+@Autonomous(name = "Blue A2 RoadRunner", group = "Blue")
+public class BlueA2RR extends AutonomousPLUS {
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
+        super.runOpMode();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-        Robot robot = new Robot();
 
         //Starting position is -36, 63
-        Pose2d startPose = new Pose2d(-36, 63, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-36, -63, Math.toRadians(0));
 
         drive.setPoseEstimate(startPose);
 
