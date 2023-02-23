@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers;
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
@@ -21,6 +22,17 @@ public class BlueA2RR extends AutonomousPLUS {
     public void runOpMode() {
         super.runOpMode();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+        org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers MayFlowers = new MayFlowers();
+
+        MayFlowers.initCamera(hardwareMap, telemetry, this);
+
+        while (!isStarted() && !isStopRequested()) {
+            MayFlowers.DEATHLOOP(MayFlowers.aprilTagDetectionPipeline);
+            telemetry.addData("Zone", robot.parkingZone);
+            telemetry.update();
+            idle();
+        }
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 

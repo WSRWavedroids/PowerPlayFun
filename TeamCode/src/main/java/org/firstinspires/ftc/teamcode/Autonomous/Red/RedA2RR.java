@@ -9,12 +9,12 @@ package org.firstinspires.ftc.teamcode.Autonomous.Red;
         import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
         import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+        import org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers;
         import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
         import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
         import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
         import org.firstinspires.ftc.teamcode.Robot;
 
-//TODO: Update coordinates for different starting position
 
 @Config
 @Autonomous(name = "Red A2 RoadRunner (Red Side, Red Terminal)", group = "Red")
@@ -24,9 +24,20 @@ public class RedA2RR extends AutonomousPLUS {
         super.runOpMode();
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers MayFlowers = new MayFlowers();
+
+        MayFlowers.initCamera(hardwareMap, telemetry, this);
+
+        while (!isStarted() && !isStopRequested()) {
+            MayFlowers.DEATHLOOP(MayFlowers.aprilTagDetectionPipeline);
+            telemetry.addData("Zone", robot.parkingZone);
+            telemetry.update();
+            idle();
+        }
+
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d startPose = new Pose2d(-36, 63, Math.toRadians(-90));
+        Pose2d startPose = new Pose2d(-36, -63, Math.toRadians(90));
 
         drive.setPoseEstimate(startPose);
 
@@ -35,7 +46,7 @@ public class RedA2RR extends AutonomousPLUS {
 
                 //Move forward 27 inches (-36, 63) -> (-36, 36)
                 //Move left 36 inches (-36, 36) -> (0, 36)
-                .splineToLinearHeading(new Pose2d(-8, 24, Math.toRadians(0)), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-8, -24, Math.toRadians(180)), Math.toRadians(0))
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
                     //robot.moveArm("Up");
@@ -51,11 +62,11 @@ public class RedA2RR extends AutonomousPLUS {
                 .back(2)
                 //Move right 12 inches (0, 36) -> (-12, 36)
                 //Move forward 24 inches (-12, 36) -> (-12, 12)
-                .lineToLinearHeading(new Pose2d(-12, 12,Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-12, -12,Math.toRadians(90)))
                 //.splineTo(new Vector2d(-12, 12), Math.toRadians(-180))
                 //Move forward 40(?) inches (-12, 12) -> (-52, 12)
                 //Turn 90 degrees to the right *ADJUST HEADING*
-                .lineToLinearHeading(new Pose2d(-52, 12,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(-52, -12,Math.toRadians(-180)))
                 //Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
                     //robot.openAndCloseClaw(0);
@@ -63,7 +74,7 @@ public class RedA2RR extends AutonomousPLUS {
                 })
                 //1. Move backward 28 inches (-52, 12) -> (-24, 12)
                 //2. Turn 90 degrees to left *ADJUST HEADING*
-                .lineToLinearHeading(new Pose2d(-24, 12,Math.toRadians(-90)))
+                .lineToLinearHeading(new Pose2d(-24, -12,Math.toRadians(90)))
                 //3. Put cone on high pole *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
                     //robot.moveArm("Down");
@@ -71,7 +82,7 @@ public class RedA2RR extends AutonomousPLUS {
                 })
                 //4. Turn 90 degrees to right *ADJUST HEADING*
                 //5. Move forward 28 inches (-24, 12) -> (-52, 12)
-                .lineToLinearHeading(new Pose2d(-52, 12,Math.toRadians(-180)))
+                .lineToLinearHeading(new Pose2d(-52, -12,Math.toRadians(-180)))
                 //6. Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
                     //robot.openAndCloseClaw(0);
