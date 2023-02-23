@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 //DON'T LOOK I MEAN IT
+@Autonomous(name="Cha-Cha Slide", group="Fun")
 public class dontLookEmily extends AutonomousPLUS {
 
 

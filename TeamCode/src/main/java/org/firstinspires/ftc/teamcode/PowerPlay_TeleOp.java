@@ -51,7 +51,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * did a horrible job of doing that.
  */
 
-@TeleOp(name="Fission our WAVE to Worlds! :)", group="Iterative Opmode")
+@TeleOp(name="Fission our WAVE to Worlds! :)", group="CompBot")
 public class PowerPlay_TeleOp extends OpMode {
 
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.

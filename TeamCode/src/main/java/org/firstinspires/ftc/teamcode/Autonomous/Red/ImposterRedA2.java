@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.Autonomous.Red;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.Autonomous.Falafel;
 
+@Disabled
 @Autonomous(group = "Red", name = "Imposter Red A2")
 public class ImposterRedA2 extends AutonomousPLUS {
     Falafel F = new Falafel();
