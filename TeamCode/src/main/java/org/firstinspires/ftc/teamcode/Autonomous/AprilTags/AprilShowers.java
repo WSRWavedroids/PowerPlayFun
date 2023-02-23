@@ -34,7 +34,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
 
-@Autonomous(group = "Any", name = "April Showers (Pure Parking)")
+@Autonomous(group = "AprilTags", name = "April Showers (Pure Parking)")
 public class AprilShowers extends LinearOpMode
 {
     //INTRODUCE VARIABLES HERE

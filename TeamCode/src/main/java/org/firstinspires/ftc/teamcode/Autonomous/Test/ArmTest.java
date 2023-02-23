@@ -1,13 +1,12 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Blue;
+package org.firstinspires.ftc.teamcode.Autonomous.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers;
 import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 
 
 @Autonomous(group = "Blue", name = "Blue A3 Start (Red Terminal)")
-public class BlueA3Start extends AutonomousPLUS {
+public class ArmTest extends AutonomousPLUS {
     @Override
     public void runOpMode() {
 
