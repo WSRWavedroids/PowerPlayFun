@@ -10,10 +10,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Robot;
 
 @Config
-@Autonomous(name = "Blue A2 RoadRunner", group = "Blue")
+@Autonomous(name = "Blue A2 RoadRunner (Blue Side, Blue Terminal)", group = "Blue")
 public class BlueA2RR extends AutonomousPLUS {
     @Override
     public void runOpMode() {
@@ -22,75 +23,66 @@ public class BlueA2RR extends AutonomousPLUS {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        //Starting position is -36, 63
-        Pose2d startPose = new Pose2d(-36, -63, Math.toRadians(0));
+        Pose2d startPose = new Pose2d(-36, 63, Math.toRadians(-90));
 
         drive.setPoseEstimate(startPose);
 
-        Trajectory toFirstPole = drive.trajectoryBuilder(new Pose2d())
+        TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
+
                 //Move forward 27 inches (-36, 63) -> (-36, 36)
                 //Move left 36 inches (-36, 36) -> (0, 36)
-                .splineTo(new Vector2d(36, -27), Math.toRadians(0))
+                .splineToLinearHeading(new Pose2d(-8, 24, Math.toRadians(0)), Math.toRadians(0))
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.moveArm("Up");
+                    //robot.moveArm("Up");
                 })
                 //Move forward 2 inches (0, 36) -> (0, 34)
-                .splineTo(new Vector2d(0, -2), Math.toRadians(0))
-                .build();
+                .forward(2)
 
-        Trajectory toConeStackInitial = drive.trajectoryBuilder(startPose)
                 .addDisplacementMarker(() -> {
-                    robot.moveArm("Down");
-                    robot.openAndCloseClaw(0.3);
+                    //robot.moveArm("Down");
+                    //robot.openAndCloseClaw(0.3);
                 })
                 //Move backward 2 inches (0, 34) -> (0, 36)
-                .splineTo(new Vector2d(0, 2), Math.toRadians(0))
+                .back(2)
                 //Move right 12 inches (0, 36) -> (-12, 36)
                 //Move forward 24 inches (-12, 36) -> (-12, 12)
-                //Turn 90 degrees to the right *ADJUST HEADING*
-                .splineToSplineHeading(new Pose2d(-12, -24, Math.toRadians(0)), Math.toRadians(-90))
+                .lineToLinearHeading(new Pose2d(-12, 12,Math.toRadians(-90)))
+                //.splineTo(new Vector2d(-12, 12), Math.toRadians(-180))
                 //Move forward 40(?) inches (-12, 12) -> (-52, 12)
-                .splineTo(new Vector2d(-40, 0), Math.toRadians(0))
+                //Turn 90 degrees to the right *ADJUST HEADING*
+                .lineToLinearHeading(new Pose2d(-52, 12,Math.toRadians(-180)))
                 //Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.openAndCloseClaw(0);
-                    robot.moveArm("Up");
+                    //robot.openAndCloseClaw(0);
+                    //robot.moveArm("Up");
                 })
-                .build();
-
-        Trajectory cycleCone = drive.trajectoryBuilder(startPose)
                 //1. Move backward 28 inches (-52, 12) -> (-24, 12)
                 //2. Turn 90 degrees to left *ADJUST HEADING*
-                .splineToSplineHeading(new Pose2d(28, 0, Math.toRadians(-90)), Math.toRadians(0))
+                .lineToLinearHeading(new Pose2d(-24, 12,Math.toRadians(-90)))
                 //3. Put cone on high pole *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.moveArm("Down");
-                    robot.openAndCloseClaw(0.3);
+                    //robot.moveArm("Down");
+                    //robot.openAndCloseClaw(0.3);
                 })
                 //4. Turn 90 degrees to right *ADJUST HEADING*
                 //5. Move forward 28 inches (-24, 12) -> (-52, 12)
-                .splineToSplineHeading(new Pose2d(-28, 0, Math.toRadians(0)), Math.toRadians(-90))
+                .lineToLinearHeading(new Pose2d(-52, 12,Math.toRadians(-180)))
                 //6. Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.openAndCloseClaw(0);
-                    robot.moveArm("Up");
+                    //robot.openAndCloseClaw(0);
+                    //robot.moveArm("Up");
                 })
-
                 .build();
 
+
         waitForStart();
-        //Coordinate reference: x-axis is left and right between auto cone stacks, y-axis is up and down between substations
-        //From this position... forward is subtracting from y, backward is adding to y, left is adding to x, right is subtracting from x
-
-
 
         if (isStopRequested()) return;
 
         robot.openAndCloseClaw(0);
-        drive.followTrajectory(toFirstPole);
-        drive.followTrajectory(toConeStackInitial);
-        drive.followTrajectory(cycleCone);
+        drive.followTrajectorySequence(trajSeq);
         //Repeat cycleCone trajectory as much as possible
         //Get to AprilTags position (figure out where we will be at that point)
 
