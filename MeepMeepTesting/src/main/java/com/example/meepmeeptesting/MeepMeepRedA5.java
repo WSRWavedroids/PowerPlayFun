@@ -22,6 +22,7 @@ public class MeepMeepRedA5 {
 
                                 //Move forward 27 inches (-36, 63) -> (-36, 36)
                                 //Move left 36 inches (-36, 36) -> (0, 36)
+                                .splineTo(new Vector2d(24,-36), Math.toRadians(180))
                                 .splineToLinearHeading(new Pose2d(8, -24, Math.toRadians(180)), Math.toRadians(0))
                                 //Arm witchery *DISPLACEMENT MARKER HERE*
                                 .addDisplacementMarker(() -> {
@@ -38,7 +39,7 @@ public class MeepMeepRedA5 {
                                 .back(2)
                                 //Move right 12 inches (0, 36) -> (-12, 36)
                                 //Move forward 24 inches (-12, 36) -> (-12, 12)
-                                .lineToLinearHeading(new Pose2d(12, -12,Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(12, -12,Math.toRadians(90)))
                                 //.splineTo(new Vector2d(-12, 12), Math.toRadians(-180))
                                 //Move forward 40(?) inches (-12, 12) -> (-52, 12)
                                 //Turn 90 degrees to the right *ADJUST HEADING*
@@ -50,7 +51,7 @@ public class MeepMeepRedA5 {
                                 })
                                 //1. Move backward 28 inches (-52, 12) -> (-24, 12)
                                 //2. Turn 90 degrees to left *ADJUST HEADING*
-                                .lineToLinearHeading(new Pose2d(24, -12,Math.toRadians(-90)))
+                                .lineToLinearHeading(new Pose2d(24, -12,Math.toRadians(90)))
                                 //3. Put cone on high pole *DISPLACEMENT MARKER HERE*
                                 .addDisplacementMarker(() -> {
                                     //robot.moveArm("Down");

@@ -45,6 +45,7 @@ public class BlueA2RR extends AutonomousPLUS {
 
                 //Move forward 27 inches (-36, 63) -> (-36, 36)
                 //Move left 36 inches (-36, 36) -> (0, 36)
+                .splineTo(new Vector2d(-24,36), Math.toRadians(0))
                 .splineToLinearHeading(new Pose2d(-8, 24, Math.toRadians(0)), Math.toRadians(0))
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
