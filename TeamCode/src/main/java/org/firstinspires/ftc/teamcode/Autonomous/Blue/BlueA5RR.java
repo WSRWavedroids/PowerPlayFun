@@ -1,21 +1,24 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.Blue;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+        import com.acmerobotics.dashboard.FtcDashboard;
+        import com.acmerobotics.dashboard.config.Config;
+        import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+        import com.acmerobotics.roadrunner.geometry.Pose2d;
+        import com.acmerobotics.roadrunner.geometry.Vector2d;
+        import com.acmerobotics.roadrunner.trajectory.Trajectory;
+        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Robot;
+        import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
+        import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
+        import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
+        import org.firstinspires.ftc.teamcode.Robot;
+
+//TODO: Update coordinates for different starting position
 
 @Config
-@Autonomous(name = "Blue A2 RoadRunner (Blue Side, Blue Terminal)", group = "Blue")
-public class BlueA2RR extends AutonomousPLUS {
+@Autonomous(name = "Blue A5 RoadRunner (Blue Side, Red Terminal)", group = "Blue")
+public class BlueA5RR extends AutonomousPLUS {
     @Override
     public void runOpMode() {
         super.runOpMode();
@@ -95,4 +98,5 @@ public class BlueA2RR extends AutonomousPLUS {
         while (!isStopRequested() && opModeIsActive()) ;
     }
 }
+
 
