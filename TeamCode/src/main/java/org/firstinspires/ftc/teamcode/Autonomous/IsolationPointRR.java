@@ -1,23 +1,18 @@
-package org.firstinspires.ftc.teamcode.Autonomous.Blue;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers;
-import org.firstinspires.ftc.teamcode.Autonomous.AutonomousPLUS;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
-import org.firstinspires.ftc.teamcode.Robot;
 
 @Config
-@Autonomous(name = "Blue A2 RoadRunner (Blue Side, Blue Terminal)", group = "Blue")
-public class BlueA2RR extends AutonomousPLUS {
+@Autonomous(name = "Isolation Arm Point", group = "RR")
+public class IsolationPointRR extends AutonomousPLUS {
     @Override
     public void runOpMode() {
         //Runs the runOpMode() function in AutonomousPLUS because this is an extension of it
@@ -27,14 +22,14 @@ public class BlueA2RR extends AutonomousPLUS {
         //Basic procedure for setting up AprilTags recognition
         org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers MayFlowers = new MayFlowers();
 
-        MayFlowers.initCamera(hardwareMap, telemetry, this);
+        //MayFlowers.initCamera(hardwareMap, telemetry, this);
 
-        while (!isStarted() && !isStopRequested()) {
-            MayFlowers.DEATHLOOP(MayFlowers.aprilTagDetectionPipeline);
-            telemetry.addData("Zone", robot.parkingZone);
-            telemetry.update();
-            idle();
-        }
+        //while (!isStarted() && !isStopRequested()) {
+            //MayFlowers.DEATHLOOP(MayFlowers.aprilTagDetectionPipeline);
+            //telemetry.addData("Zone", robot.parkingZone);
+           // telemetry.update();
+           // idle();
+      //  }
 
         //Control hub is offset 4.5 inches in x and 3 inches in y
         //Establishing the hardware map
@@ -48,62 +43,28 @@ public class BlueA2RR extends AutonomousPLUS {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 
                 //Move forward 37 inches (-36, 63) -> (-36, 26) and rotate 90 degrees to the right
-                .lineToSplineHeading(new Pose2d(-36,26, Math.toRadians(180)))
+                .lineToSplineHeading(new Pose2d(-36,25, Math.toRadians(180)))
 
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.moveArm("Up");
+                    robot.slide.setPower(-0.9);
+                    sleep(400);
                 })
 
                 //Move forward 3 inches (-36, 36) -> (-36, 33)
-                .forward(3)
+                .forward(5)
 
                 //Place the cone
                 .addDisplacementMarker(() -> {
                     robot.moveArm("Down");
                     robot.openAndCloseClaw(0.3);
+                    sleep(100);
                 })
 
                 //Move backward 3 inches (-36, 33) -> (-36, 36)
-                .back(3)
+                .back(5)
 
-                //Move left 20 inches (-36, 36) -> (-36, 16)
-                .lineToLinearHeading(new Pose2d(-36, 16,Math.toRadians(180)))
 
-                //Move forward 28 inches (-36, 16) -> (-64, 16)
-                .lineToLinearHeading(new Pose2d(-64, 16,Math.toRadians(180)))
-
-                //Creep forward 2 inches (-64, 16) -> (-66, 16)
-                .forward(2)
-
-                //Pick up a cone *DISPLACEMENT MARKER HERE*
-                .addDisplacementMarker(() -> {
-                    robot.openAndCloseClaw(0);
-                    robot.moveArm("Up");
-                })
-
-                //Creep backward 2 inches (-66, 16) -> (-64, 16)
-                .back(2)
-
-                //1. Move backward 38 inches (-64, 12) -> (-26, 12)
-                //2. Turn 90 degrees to right *ADJUST HEADING*
-                .lineToLinearHeading(new Pose2d(-26, 16,Math.toRadians(90)))
-
-                //3. Put cone on medium pole *DISPLACEMENT MARKER HERE*
-                .addDisplacementMarker(() -> {
-                    robot.moveArm("Down");
-                    robot.openAndCloseClaw(0.3);
-                })
-
-                //4. Turn 90 degrees to left *ADJUST HEADING*
-                //5. Move forward 38 inches (-24, 12) -> (-64, 12)
-                .lineToLinearHeading(new Pose2d(-64, 16,Math.toRadians(180)))
-
-                //6. Pick up a cone *DISPLACEMENT MARKER HERE*
-                .addDisplacementMarker(() -> {
-                    robot.openAndCloseClaw(0);
-                    robot.moveArm("Up");
-                })
                 .build();
 
 

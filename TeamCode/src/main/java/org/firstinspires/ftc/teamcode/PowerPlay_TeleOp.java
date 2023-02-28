@@ -100,6 +100,8 @@ public class PowerPlay_TeleOp extends OpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         robot.tellMotorOutput();
 
+        float armStickY = this.gamepad2.left_stick_y;
+        float turntableStickX = this.gamepad2.right_stick_x;
 
         // This section checks what buttons on the Dpad are being pressed and changes the speed accordingly.
 
@@ -123,23 +125,19 @@ public class PowerPlay_TeleOp extends OpMode {
             telemetry.addData("Speed", "Normal Boi");
         }
 
-        if (gamepad2.left_stick_y > 0.5){
-            robot.slide.setPower(0.25);
-            robot.slide.setDirection(DcMotor.Direction.FORWARD);
-        } else if (gamepad2.left_stick_y < -0.5){
-            robot.slide.setPower(0.75);
-            robot.slide.setDirection(DcMotor.Direction.REVERSE);
+        if (gamepad2.left_stick_y < -0.5){
+            robot.slide.setPower(-armStickY * 0.75);
+        } else if (gamepad2.left_stick_y > 0.5){
+            robot.slide.setPower(-armStickY * 0.75);
         } else {
             robot.holdArm();
         }
 
         //Moves the turntable based on the x-coordinate of the right joystick
         if (gamepad2.right_stick_x < -0.5){
-            robot.turntable.setPower(0.45);
-            robot.turntable.setDirection(DcMotor.Direction.REVERSE);
+            robot.turntable.setPower(turntableStickX * 0.40);
         } else if (gamepad2.right_stick_x > 0.5){
-            robot.turntable.setPower(0.45);
-            robot.turntable.setDirection(DcMotor.Direction.FORWARD);
+            robot.turntable.setPower(turntableStickX * 0.40);
         } else {
             robot.turntable.setPower(0);
         }
