@@ -144,9 +144,9 @@ public class PowerPlay_TeleOp extends OpMode {
 
 //other possible code is this without this
         if (this.gamepad2.a) {
-            robot.openAndCloseClaw(0);
+            robot.openAndCloseClaw(0.5);
         } else if (this.gamepad2.b) {
-            robot.openAndCloseClaw(.3);
+            robot.openAndCloseClaw(1);
         }
 
     }

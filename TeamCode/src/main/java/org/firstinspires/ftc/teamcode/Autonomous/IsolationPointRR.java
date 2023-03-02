@@ -43,26 +43,59 @@ public class IsolationPointRR extends AutonomousPLUS {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 
                 //Move forward 37 inches (-36, 63) -> (-36, 26) and rotate 90 degrees to the right
-                .lineToSplineHeading(new Pose2d(-36,25, Math.toRadians(180)))
+                .addDisplacementMarker(() -> {
+                    robot.openAndCloseClaw(1);
+                    sleep(50);
+                    robot.slide.setPower(-0.3);
+                    sleep(50);
+                })
+
+                .lineToSplineHeading(new Pose2d(-36,24.5, Math.toRadians(180)))
 
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.slide.setPower(-0.9);
-                    sleep(400);
+                    robot.slide.setPower(-0.45);
+                    sleep(300);
                 })
 
                 //Move forward 3 inches (-36, 36) -> (-36, 33)
-                .forward(5)
+                .forward(7)
 
                 //Place the cone
                 .addDisplacementMarker(() -> {
+                    sleep(50);
                     robot.moveArm("Down");
-                    robot.openAndCloseClaw(0.3);
+                    robot.openAndCloseClaw(0.5);
                     sleep(100);
                 })
 
                 //Move backward 3 inches (-36, 33) -> (-36, 36)
-                .back(5)
+                .back(7)
+
+
+                //Move left 20 inches (-36, 36) -> (-36, 16)
+                .lineToLinearHeading(new Pose2d(-36, 13,Math.toRadians(180)))
+
+                //Move forward 28 inches (-36, 16) -> (-64, 16)
+                .lineToLinearHeading(new Pose2d(-65, 13,Math.toRadians(180)))
+
+                .addDisplacementMarker(() -> {
+                    robot.slide.setPower(-0.47);
+                    sleep(125);
+                })
+
+                //Creep forward 2 inches (-64, 16) -> (-66, 16)
+                .forward(1)
+
+                //Pick up a cone *DISPLACEMENT MARKER HERE*
+                .addDisplacementMarker(() -> {
+                    robot.openAndCloseClaw(1);
+                    robot.slide.setPower(-0.5);
+                    sleep(175);
+                })
+
+                //Creep backward 2 inches (-66, 16) -> (-64, 16)
+                .back(3)
 
 
                 .build();

@@ -44,50 +44,73 @@ public class RedA5RR extends AutonomousPLUS {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
 
-                //Move forward 27 inches (-36, 63) -> (-36, 36)
-                //Move left 36 inches (-36, 36) -> (0, 36)
-                .splineTo(new Vector2d(24,-36), Math.toRadians(0))
-                .splineToLinearHeading(new Pose2d(8, -24, Math.toRadians(0)), Math.toRadians(0))
+                //Move forward 37 inches (-36, 63) -> (-36, 26) and rotate 90 degrees to the right
+                .lineToSplineHeading(new Pose2d(36,-25, Math.toRadians(0)))
+
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    //robot.moveArm("Up");
+                    robot.slide.setPower(-0.8);
+                    sleep(300);
                 })
-                //Move forward 2 inches (0, 36) -> (0, 34)
-                .forward(2)
+
+                //Move forward 3 inches (-36, 36) -> (-36, 33)
+                .forward(5)
+
+                //Place the cone
+                .addDisplacementMarker(() -> {
+                    robot.moveArm("Down");
+                    robot.openAndCloseClaw(0.3);
+                    sleep(100);
+                })
+
+                //Move backward 3 inches (-36, 33) -> (-36, 36)
+                .back(5)
+
+                //Move left 20 inches (-36, 36) -> (-36, 16)
+                .lineToLinearHeading(new Pose2d(36, -14,Math.toRadians(0)))
+
+                //Move forward 28 inches (-36, 16) -> (-64, 16)
+                .lineToLinearHeading(new Pose2d(66, -14,Math.toRadians(0)))
 
                 .addDisplacementMarker(() -> {
-                    //robot.moveArm("Down");
-                    //robot.openAndCloseClaw(0.3);
+                    robot.slide.setPower(-0.5);
+                    sleep(200);
                 })
-                //Move backward 2 inches (0, 34) -> (0, 36)
-                .back(2)
-                //Move right 12 inches (0, 36) -> (-12, 36)
-                //Move forward 24 inches (-12, 36) -> (-12, 12)
-                .lineToLinearHeading(new Pose2d(12, -12,Math.toRadians(-90)))
-                //.splineTo(new Vector2d(-12, 12), Math.toRadians(-180))
-                //Move forward 40(?) inches (-12, 12) -> (-52, 12)
-                //Turn 90 degrees to the right *ADJUST HEADING*
-                .lineToLinearHeading(new Pose2d(52, -12,Math.toRadians(-180)))
+
+                //Creep forward 2 inches (-64, 16) -> (-66, 16)
+                .forward(1)
+
                 //Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    //robot.openAndCloseClaw(0);
-                    //robot.moveArm("Up");
+                    robot.openAndCloseClaw(0);
+                    robot.slide.setPower(-0.5);
+                    sleep(300);
                 })
-                //1. Move backward 28 inches (-52, 12) -> (-24, 12)
-                //2. Turn 90 degrees to left *ADJUST HEADING*
-                .lineToLinearHeading(new Pose2d(24, -12,Math.toRadians(-90)))
-                //3. Put cone on high pole *DISPLACEMENT MARKER HERE*
+
+                //Creep backward 2 inches (-66, 16) -> (-64, 16)
+                .back(1)
+
+
+
+
+                //1. Move backward 38 inches (-64, 12) -> (-26, 12)
+                //2. Turn 90 degrees to right *ADJUST HEADING*
+                .lineToLinearHeading(new Pose2d(26, -16,Math.toRadians(-90)))
+
+                //3. Put cone on medium pole *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    //robot.moveArm("Down");
-                    //robot.openAndCloseClaw(0.3);
+                    robot.moveArm("Down");
+                    robot.openAndCloseClaw(0.3);
                 })
-                //4. Turn 90 degrees to right *ADJUST HEADING*
-                //5. Move forward 28 inches (-24, 12) -> (-52, 12)
-                .lineToLinearHeading(new Pose2d(52, -12,Math.toRadians(-180)))
+
+                //4. Turn 90 degrees to left *ADJUST HEADING*
+                //5. Move forward 38 inches (-24, 12) -> (-64, 12)
+                .lineToLinearHeading(new Pose2d(64, -16,Math.toRadians(0)))
+
                 //6. Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    //robot.openAndCloseClaw(0);
-                    //robot.moveArm("Up");
+                    robot.openAndCloseClaw(0);
+                    robot.moveArm("Up");
                 })
                 .build();
 

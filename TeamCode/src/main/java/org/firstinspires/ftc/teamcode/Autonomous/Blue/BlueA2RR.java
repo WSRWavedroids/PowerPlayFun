@@ -48,42 +48,53 @@ public class BlueA2RR extends AutonomousPLUS {
         TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
 
                 //Move forward 37 inches (-36, 63) -> (-36, 26) and rotate 90 degrees to the right
-                .lineToSplineHeading(new Pose2d(-36,26, Math.toRadians(180)))
+                .lineToSplineHeading(new Pose2d(-36,25, Math.toRadians(180)))
 
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    robot.moveArm("Up");
+                    robot.slide.setPower(-0.8);
+                    sleep(300);
                 })
 
                 //Move forward 3 inches (-36, 36) -> (-36, 33)
-                .forward(3)
+                .forward(5)
 
                 //Place the cone
                 .addDisplacementMarker(() -> {
                     robot.moveArm("Down");
                     robot.openAndCloseClaw(0.3);
+                    sleep(100);
                 })
 
                 //Move backward 3 inches (-36, 33) -> (-36, 36)
-                .back(3)
+                .back(5)
 
                 //Move left 20 inches (-36, 36) -> (-36, 16)
-                .lineToLinearHeading(new Pose2d(-36, 16,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-36, 14,Math.toRadians(180)))
 
                 //Move forward 28 inches (-36, 16) -> (-64, 16)
-                .lineToLinearHeading(new Pose2d(-64, 16,Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-66, 14,Math.toRadians(180)))
+
+                .addDisplacementMarker(() -> {
+                    robot.slide.setPower(-0.5);
+                    sleep(200);
+                })
 
                 //Creep forward 2 inches (-64, 16) -> (-66, 16)
-                .forward(2)
+                .forward(1)
 
                 //Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
                     robot.openAndCloseClaw(0);
-                    robot.moveArm("Up");
+                    robot.slide.setPower(-0.5);
+                    sleep(300);
                 })
 
                 //Creep backward 2 inches (-66, 16) -> (-64, 16)
-                .back(2)
+                .back(1)
+
+
+
 
                 //1. Move backward 38 inches (-64, 12) -> (-26, 12)
                 //2. Turn 90 degrees to right *ADJUST HEADING*

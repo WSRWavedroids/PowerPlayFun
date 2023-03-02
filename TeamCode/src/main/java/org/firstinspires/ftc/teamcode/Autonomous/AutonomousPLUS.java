@@ -197,20 +197,20 @@ public class AutonomousPLUS extends LinearOpMode {
     public void moveArmE(String direction, int distance) {
         robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         if (direction == "Up") {
-            //robot.slide.setDirection(DcMotor.Direction.REVERSE);
+
             if (opModeIsActive()) {
-                robot.slide.setTargetPosition(-distance + Math.abs(robot.slide.getCurrentPosition()));
+                robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
                 robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slide.setPower(0.75);
+                robot.slide.setPower(-0.75);
 
                 while (opModeIsActive()) {
                     robot.tellMotorOutput();
                     telemetry.addData("Arm", "Arm is climbing");
                     telemetry.update();
 
-                    if (Math.abs(robot.slide.getCurrentPosition()) == Math.abs(robot.slide.getTargetPosition())) {
-                        break;
-                    }
+                    //if (Math.abs(robot.slide.getCurrentPosition()) == Math.abs(robot.slide.getTargetPosition())) {
+                      //  break;
+                    //}
 
                 }
                 robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -222,9 +222,9 @@ public class AutonomousPLUS extends LinearOpMode {
             telemetry.update();
 
         } else if (direction == "Down") {
-            robot.slide.setDirection(DcMotor.Direction.FORWARD);
+
             if (opModeIsActive()) {
-                robot.setTargets("Arm", distance);
+                robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
                 robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 robot.slide.setPower(0.5);
 
