@@ -187,7 +187,7 @@ public class Robot {
         telemetry.addData("Motors", String.format("BR Power(%.2f) BR Location (%d) BR Target (%d)", backRightDrive.getPower(), backRightDrive.getCurrentPosition(), backRightDrive.getTargetPosition()));
         telemetry.addData("Motors", String.format("Arm Power (%.2f) Arm Location (%d) Arm Target (%d)", slide.getPower(), slide.getCurrentPosition(), slide.getTargetPosition()));
         telemetry.addData("Motors", String.format("Turntable (%.2f) Turntable Location (%d) Turntable Target (%d)", turntable.getPower(), turntable.getCurrentPosition(), turntable.getTargetPosition()));
-
+        telemetry.addData("Claw", whiteClaw.getPosition());
         telemetry.update();
     }
 

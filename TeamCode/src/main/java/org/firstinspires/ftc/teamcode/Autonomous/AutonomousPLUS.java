@@ -50,6 +50,7 @@ public class AutonomousPLUS extends LinearOpMode {
 
     public double speed = 0.4;
     public int sleepTime;
+    public boolean inMarker;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
     public Robot robot = new Robot();
@@ -217,7 +218,7 @@ public class AutonomousPLUS extends LinearOpMode {
                 telemetry.addData("Arm", "Arm has peaked!");
                 telemetry.update();
             }
-            robot.slide.setPower(0.1);
+            //robot.slide.setPower(0.1);
             telemetry.addData("Arm", "Arm has reached the pinnacle");
             telemetry.update();
 
@@ -234,7 +235,7 @@ public class AutonomousPLUS extends LinearOpMode {
 
                 robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            robot.slide.setPower(0.1);
+            //robot.slide.setPower(0.1);
         }
 
         robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -264,5 +265,11 @@ public class AutonomousPLUS extends LinearOpMode {
             robot.turntable.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         robot.turntable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
+    public void updateArm(){
+        if (inMarker = false){
+            robot.holdArm();
+        }
     }
 }
