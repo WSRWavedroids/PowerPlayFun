@@ -31,7 +31,7 @@ public class BlueA2Start extends AutonomousPLUS {
 
         //MayFlowers.AprilTagsUpdate();
 
-        robot.openAndCloseClaw(0);
+        robot.openAndCloseClaw(1);
         prepareNextAction(300);
         sleepTime = 400;
         moveArm("Up", 0.75);
@@ -39,16 +39,16 @@ public class BlueA2Start extends AutonomousPLUS {
         moveRobotForward(1500, 0);
         moveRobotBackward(300, 0);
         moveRobotLeft(1825, 0);
-        sleepTime = (1800);
+        sleepTime = (1600);//was 1650
         moveArm("Up",0.75);
         speed = 0.25;
         moveRobotForward(275, 0);
         moveArm("Down",0.75);
         //sleep(50);
         robot.slide.setPower(0.1);
-        robot.openAndCloseClaw(0.3);
+        robot.openAndCloseClaw(0.78);
         //prepareNextAction(25);
-        moveRobotBackward(150, 0);
+        moveRobotBackward(200, 0);
         //prepareNextAction(100);
         speed = 0.5;
 

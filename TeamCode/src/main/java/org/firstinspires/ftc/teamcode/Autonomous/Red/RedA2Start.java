@@ -26,14 +26,14 @@ public class RedA2Start extends AutonomousPLUS {
         //Do this to pass inspection.
         //waitForStart();
 
-        robot.openAndCloseClaw(0);
+        robot.openAndCloseClaw(1);
         prepareNextAction(300);
         sleepTime = 400;
         moveArm("Up", 0.75);
         moveRobotForward(1500, 50);
         moveRobotBackward(300, 50);
         moveRobotRight(1875, 50);
-        sleepTime = (1800);
+        sleepTime = (1650);//was 1800
         moveArm("Up",0.75);
         prepareNextAction(100);
         speed = 0.25;
@@ -41,7 +41,7 @@ public class RedA2Start extends AutonomousPLUS {
         moveArm("Down",0.75);
         sleep(50);
         robot.slide.setPower(0.1);
-        robot.openAndCloseClaw(0.3);
+        robot.openAndCloseClaw(0.8);
         prepareNextAction(25);
         moveRobotBackward(150, 50);
         prepareNextAction(100);

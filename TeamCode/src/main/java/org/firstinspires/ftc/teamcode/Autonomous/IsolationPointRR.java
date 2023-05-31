@@ -6,33 +6,38 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers;
 import org.firstinspires.ftc.teamcode.RoadRunner.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.RoadRunner.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.Robot;
 
+
+
 @Config
 @Autonomous(name = "Isolation Arm Point", group = "RR")
 public class IsolationPointRR extends OpMode {
 
+    public SampleMecanumDrive drive;
     Robot robot = new Robot();
     AutonomousPLUS AP = new AutonomousPLUS();
-    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
+
+    @Override
     public void init() {
 
-        AP.runOpMode();
+        AP.makeItWork(hardwareMap, telemetry, this);
         robot.init(hardwareMap, telemetry, this);
+        drive = new SampleMecanumDrive(hardwareMap);
 
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetry.addData("Status", "Initialized");
         //Basic procedure for setting up AprilTags recognition
         org.firstinspires.ftc.teamcode.Autonomous.AprilTags.MayFlowers MayFlowers = new MayFlowers();
     }
-
-
-        //Runs the runOpMode() function in AutonomousPLUS because this is an extension of it
 
     @Override
     public void start() {
@@ -51,7 +56,9 @@ public class IsolationPointRR extends OpMode {
                 .addDisplacementMarker(() -> {
                     AP.inMarker = true;
                     robot.openAndCloseClaw(1);
-                    AP.moveArmE("Up", -400);
+                    //robot.slide.setTargetPosition(-400 + robot.slide.getCurrentPosition());
+                    //robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    robot.slide.setPower(-0.75);
                     AP.inMarker = false;
                 })
 

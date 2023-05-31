@@ -29,6 +29,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
  */
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -48,9 +49,11 @@ public class AutonomousPLUS extends LinearOpMode {
     // This section tells the program all of the different pieces of hardware that are on our robot that we will use in the program.
     private ElapsedTime runtime = new ElapsedTime();
 
+
     public double speed = 0.4;
     public int sleepTime;
     public boolean inMarker;
+    public double power;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
     public Robot robot = new Robot();
@@ -63,8 +66,8 @@ public class AutonomousPLUS extends LinearOpMode {
         robot.encoderRunningMode();
     }
 
-    public void makeItWork(HardwareMap hardwareMap, Telemetry telemetry) {
-        robot.init(hardwareMap, telemetry, this);
+    public void makeItWork(HardwareMap hardwareMap, Telemetry telemetry, OpMode opMode) {
+        robot.init(hardwareMap, telemetry, opMode);
     }
 
     //I think the setTargets Function is broken. Motors don't stop at the right place
@@ -197,37 +200,26 @@ public class AutonomousPLUS extends LinearOpMode {
 
     public void moveArmE(String direction, int distance) {
         robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        power = -0.75;
         if (direction == "Up") {
 
             if (opModeIsActive()) {
                 robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
                 robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slide.setPower(-0.75);
+                robot.slide.setPower(power);
 
                 while (opModeIsActive()) {
                     robot.tellMotorOutput();
-                    telemetry.addData("Arm", "Arm is climbing");
-                    telemetry.update();
-
-                    //if (Math.abs(robot.slide.getCurrentPosition()) == Math.abs(robot.slide.getTargetPosition())) {
-                      //  break;
-                    //}
-
                 }
                 robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                telemetry.addData("Arm", "Arm has peaked!");
-                telemetry.update();
             }
-            //robot.slide.setPower(0.1);
-            telemetry.addData("Arm", "Arm has reached the pinnacle");
-            telemetry.update();
 
         } else if (direction == "Down") {
-
+            power = 0.5;
             if (opModeIsActive()) {
                 robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
                 robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slide.setPower(0.5);
+                robot.slide.setPower(power);
 
                 while (opModeIsActive() && robot.slide.isBusy()) {
                     robot.tellMotorOutput();
@@ -235,12 +227,9 @@ public class AutonomousPLUS extends LinearOpMode {
 
                 robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             }
-            //robot.slide.setPower(0.1);
         }
 
         robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        telemetry.addData("Arm", "Arm is reset");
-        telemetry.update();
 
     }
 
@@ -268,8 +257,50 @@ public class AutonomousPLUS extends LinearOpMode {
     }
 
     public void updateArm(){
-        if (inMarker = false){
+        if (!inMarker){
             robot.holdArm();
+        } else {
+            if(robot.slide.getTargetPosition() != robot.slide.getCurrentPosition()){
+                robot.slide.setPower(power);
+            } else if (robot.slide.getTargetPosition() == robot.slide.getCurrentPosition()){
+                inMarker = false;
+            }
+        }
+    }
+
+    public void armPID(double targetPosition){
+
+       double Kp = 5;
+       double Ki = 0;
+       double Kd = 0.2;
+
+       double reference = targetPosition;
+       float encoderPosition = robot.slide.getCurrentPosition();
+       double integralSum = 0;
+       double lastError = 0;
+
+        ElapsedTime timer = new ElapsedTime();
+
+        while (encoderPosition != targetPosition) {
+
+            // calculate the error
+            double error = reference - encoderPosition;
+
+            // rate of change of the error
+            double derivative = (error - lastError) / timer.seconds();
+
+            // sum of all error over time
+            integralSum = integralSum + (error * timer.seconds());
+
+            double out = (Kp * error) + (Ki * integralSum) + (Kd * derivative);
+
+            robot.slide.setPower(out);
+
+            lastError = error;
+
+            // reset the timer for next time
+            timer.reset();
+
         }
     }
 }
