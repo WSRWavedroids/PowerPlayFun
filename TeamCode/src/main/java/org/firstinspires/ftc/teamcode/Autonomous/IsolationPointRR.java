@@ -42,7 +42,6 @@ public class IsolationPointRR extends OpMode {
     @Override
     public void start() {
 
-
         //Control hub is offset 4.5 inches in x and 3 inches in y
 
         //Setting starting position
@@ -54,21 +53,15 @@ public class IsolationPointRR extends OpMode {
 
                 //Move forward 37 inches (-36, 63) -> (-36, 26) and rotate 90 degrees to the right
                 .addDisplacementMarker(() -> {
-                    AP.inMarker = true;
+                    AP.slidePos = 400;
                     robot.openAndCloseClaw(1);
-                    //robot.slide.setTargetPosition(-400 + robot.slide.getCurrentPosition());
-                    //robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    robot.slide.setPower(-0.75);
-                    AP.inMarker = false;
                 })
 
                 .lineToSplineHeading(new Pose2d(-36, 24.5, Math.toRadians(180)))
 
                 //Arm witchery *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    AP.inMarker = true;
-                    AP.moveArmE("Up", -1000);
-                    AP.inMarker = false;
+                    AP.slidePos = 1000;
                 })
 
                 //Move forward 3 inches (-36, 36) -> (-36, 33)
@@ -76,9 +69,7 @@ public class IsolationPointRR extends OpMode {
 
                 //Place the cone
                 .addDisplacementMarker(() -> {
-                    AP.inMarker = true;
-                    AP.moveArmE("Down", -1000);
-                    AP.inMarker = false;
+                    AP.slidePos = 400;
                 })
 
                 //Move backward 3 inches (-36, 33) -> (-36, 36)
@@ -91,32 +82,23 @@ public class IsolationPointRR extends OpMode {
                 //Move forward 28 inches (-36, 16) -> (-64, 16)
                 .lineToLinearHeading(new Pose2d(-65, 13, Math.toRadians(180)))
 
-                //.addDisplacementMarker(() -> {
-//
-                // })
 
                 //Creep forward 2 inches (-64, 16) -> (-66, 16)
                 .forward(1)
 
                 //Pick up a cone *DISPLACEMENT MARKER HERE*
                 .addDisplacementMarker(() -> {
-                    AP.inMarker = true;
                     robot.openAndCloseClaw(1);
-                    AP.moveArmE("Up", -100);
-                    AP.inMarker = false;
+                    AP.slidePos = 100;
                 })
 
                 //Creep backward 2 inches (-66, 16) -> (-64, 16)
                 .back(3)
 
                 .addDisplacementMarker(() -> {
-                    AP.inMarker = true;
-                    //moveArmE("Up", -500);
-                    //Arm is now at 1000 ticks
-                    AP.inMarker = false;
+                    AP.slidePos = 1000;
                 })
-
-
+                
                 .build();
         drive.followTrajectorySequenceAsync(trajSeq);
     }
@@ -127,7 +109,7 @@ public class IsolationPointRR extends OpMode {
 
             drive.update();
 
-            AP.updateArm();
+            AP.armPID();
 
         }
 

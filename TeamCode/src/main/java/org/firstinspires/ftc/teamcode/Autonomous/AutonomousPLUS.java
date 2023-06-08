@@ -54,6 +54,7 @@ public class AutonomousPLUS extends LinearOpMode {
     public int sleepTime;
     public boolean inMarker;
     public double power;
+    public double slidePos;
 
     //DO NOT DELETE THIS LINE! CAPITALIZATION IS VERY IMPORTANT!!!
     public Robot robot = new Robot();
@@ -198,41 +199,6 @@ public class AutonomousPLUS extends LinearOpMode {
         }
     }
 
-    public void moveArmE(String direction, int distance) {
-        robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        power = -0.75;
-        if (direction == "Up") {
-
-            if (opModeIsActive()) {
-                robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
-                robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slide.setPower(power);
-
-                while (opModeIsActive()) {
-                    robot.tellMotorOutput();
-                }
-                robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
-
-        } else if (direction == "Down") {
-            power = 0.5;
-            if (opModeIsActive()) {
-                robot.slide.setTargetPosition(distance + robot.slide.getCurrentPosition());
-                robot.slide.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                robot.slide.setPower(power);
-
-                while (opModeIsActive() && robot.slide.isBusy()) {
-                    robot.tellMotorOutput();
-                }
-
-                robot.slide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            }
-        }
-
-        robot.slide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
-
     public void moveTurntable(String direction, int distance) {
 
         if (direction == "Left") {
@@ -256,32 +222,20 @@ public class AutonomousPLUS extends LinearOpMode {
         robot.turntable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void updateArm(){
-        if (!inMarker){
-            robot.holdArm();
-        } else {
-            if(robot.slide.getTargetPosition() != robot.slide.getCurrentPosition()){
-                robot.slide.setPower(power);
-            } else if (robot.slide.getTargetPosition() == robot.slide.getCurrentPosition()){
-                inMarker = false;
-            }
-        }
-    }
-
-    public void armPID(double targetPosition){
+    public void armPID(){
 
        double Kp = 5;
        double Ki = 0;
        double Kd = 0.2;
 
-       double reference = targetPosition;
+       double reference = slidePos;
        float encoderPosition = robot.slide.getCurrentPosition();
        double integralSum = 0;
        double lastError = 0;
 
         ElapsedTime timer = new ElapsedTime();
 
-        while (encoderPosition != targetPosition) {
+        while (encoderPosition != slidePos) {
 
             // calculate the error
             double error = reference - encoderPosition;
