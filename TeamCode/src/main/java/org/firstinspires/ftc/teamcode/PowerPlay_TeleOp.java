@@ -33,6 +33,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
 
 /**
  * This file is our iterative (Non-Linear) "OpMode" for TeleOp.
@@ -58,6 +62,7 @@ public class PowerPlay_TeleOp extends OpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private double speed = 0.75;
     public Robot robot = new Robot();
+
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -104,6 +109,16 @@ public class PowerPlay_TeleOp extends OpMode {
         float turntableStickX = this.gamepad2.right_stick_x;
 
         // This section checks what buttons on the Dpad are being pressed and changes the speed accordingly.
+
+        if (gamepad1.back) {
+            if (robot.controlMode == "Robot Centric"){
+                robot.controlMode = "Field Centric";
+                telemetry.addData("Control Mode", "Field Centric Controls");
+            } else if (robot.controlMode == "Field Centric"){
+                robot.controlMode = "Robot Centric";
+                telemetry.addData("Control Mode", "Robot Centric Controls");
+            }
+        }
 
         if (gamepad1.dpad_up) {
             speed = 1;
@@ -179,34 +194,55 @@ public class PowerPlay_TeleOp extends OpMode {
         // We don't really know how this function works, but it makes the wheels drive, so we don't question it.
         // Don't mess with this function unless you REALLY know what you're doing.
 
-        float rightX = -this.gamepad1.right_stick_x; //
-        float leftY = this.gamepad1.left_stick_y;
-        float leftX = -this.gamepad1.left_stick_x; //
-// do we need a rightY?
-        float[] motorPowers = new float[4];
-        motorPowers[0] = (leftY + leftX + rightX); //swapped  to +
-        motorPowers[1] = (leftY - leftX - rightX);//swapped  to -
-        motorPowers[2] = (leftY - leftX + rightX);
-        motorPowers[3] = (leftY + leftX - rightX);
+            float rightX = -this.gamepad1.right_stick_x;
+            float leftY = this.gamepad1.left_stick_y;
+            float leftX = -this.gamepad1.left_stick_x;
 
-        float max = getLargestAbsVal(motorPowers);
-        if (max < 1) {
-            max = 1;
+            double leftStickAngle = Math.atan2(leftY, leftX);
+            double leftStickMagnitude = Math.sqrt(leftX * 2.0 + leftY * 2.0);
+            double robotAngle = robot.imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
+
+            if (leftStickMagnitude > 1){
+                leftStickMagnitude = 1;
+            }
+
+            float[] motorPowers = new float[4];
+
+        if (robot.controlMode == "Robot Centric") {
+
+            motorPowers[0] = (leftY + leftX + rightX);
+            motorPowers[1] = (leftY - leftX - rightX);
+            motorPowers[2] = (leftY - leftX + rightX);
+            motorPowers[3] = (leftY + leftX - rightX);
+
+        } else if (robot.controlMode == "Field Centric") {
+
+            motorPowers[0] = (float) (Math.sin(leftStickAngle + 45 - robotAngle) * leftStickMagnitude + rightX);
+            motorPowers[1] = (float) (Math.sin(leftStickAngle - 45 - robotAngle) * leftStickMagnitude + rightX);
+            motorPowers[2] = (float) (Math.sin(leftStickAngle - 45 - robotAngle) * leftStickMagnitude + rightX);
+            motorPowers[3] = (float) (Math.sin(leftStickAngle + 45 - robotAngle) * leftStickMagnitude + rightX);
+
         }
 
-        for (int i = 0; i < motorPowers.length; i++) {
-            motorPowers[i] *= (speed / max);
-
-            float abs = Math.abs(motorPowers[i]);
-            if (abs < 0.05) {
-                motorPowers[i] = 0.0f;
+            float max = getLargestAbsVal(motorPowers);
+            if (max < 1) {
+                max = 1;
             }
-            if (abs > 1.0) {
-                motorPowers[i] /= abs;
-            }
-        }
 
-        setIndividualPowers(motorPowers);
+            for (int i = 0; i < motorPowers.length; i++) {
+                motorPowers[i] *= (speed / max);
+
+                float abs = Math.abs(motorPowers[i]);
+                if (abs < 0.05) {
+                    motorPowers[i] = 0.0f;
+                }
+                if (abs > 1.0) {
+                    motorPowers[i] /= abs;
+                }
+            }
+
+            setIndividualPowers(motorPowers);
+
     }
 
     private float getLargestAbsVal ( float[] values){

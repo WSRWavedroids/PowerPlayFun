@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 
 import java.util.Objects;
 
@@ -29,6 +30,8 @@ public class Robot {
     public HardwareMap hardwareMap;
     public static double parkingZone;
     public String startingPosition;
+    public String controlMode = "Robot Centric";
+
 
     //construct robot
     public Robot() {
@@ -181,6 +184,7 @@ public class Robot {
 
     @SuppressLint("DefaultLocale")
     public void tellMotorOutput(){
+        telemetry.addData("Control Mode", controlMode);
         telemetry.addData("Motors", String.format("FL Power(%.2f) FL Location (%d) FL Target (%d)", frontLeftDrive.getPower(), frontLeftDrive.getCurrentPosition(), frontLeftDrive.getTargetPosition()));
         telemetry.addData("Motors", String.format("FR Power(%.2f) FR Location (%d) FR Target (%d)", frontRightDrive.getPower(), frontRightDrive.getCurrentPosition(), frontRightDrive.getTargetPosition()));
         telemetry.addData("Motors", String.format("BL Power(%.2f) BL Location (%d) BL Target (%d)", backLeftDrive.getPower(), backLeftDrive.getCurrentPosition(), backLeftDrive.getTargetPosition()));
